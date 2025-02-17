@@ -55,7 +55,7 @@ function toImage(base64: string) {
 }
 
 async function fetchGalleryData(): Promise<Bottle[]> {
-    const response = await fetch('http://localhost:8080/bottle');
+    const response = await fetch('http://desktop-glhislj:8080/bottle');
     return await response.json();
 }
 
