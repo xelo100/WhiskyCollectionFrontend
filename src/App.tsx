@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import './App.css'
-import FetchGalleryData from "./DataAccess/FetchGalleryData.tsx";
 
 function App() {
   const [count, setCount] = useState(0)
