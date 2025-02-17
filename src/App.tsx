@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import FetchGalleryData from "./DataAccess/FetchGalleryData.tsx";
 
 function App() {
   const [count, setCount] = useState(0)
@@ -7,7 +8,7 @@ function App() {
   return (
     <>
       <h1>Vite + React</h1>
-
+        <FetchGalleryData/>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
