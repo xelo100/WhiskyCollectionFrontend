@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import Bottle from "../Models/Bottle.tsx";
+import './FetchGalleryData.css'
 
 function FetchGalleryData() {
     const [galleryData, setGalleryData] = useState<Bottle[]>([]);
@@ -30,18 +31,16 @@ function FetchGalleryData() {
                            : "";
 
                        return (
-                           <div className="flex justify-between bg-gray-700 rounded-md p-2">
+                           <div key={bottle.id} className="flex justify-between bg-gray-700 rounded-md p-2">
                                <img src={toImage(image)} alt=""
-                                    className="aspect-square object-contain group-hover:opacity-75"/>
-                               <div>
+                                    className="object-contain group-hover:opacity-75 gallery-image"/>
+                               <div className="grid grid-cols-1 content-between">
                                    <h3 className="text-sm text-gray-200">
                                        {bottle.name}
                                    </h3>
+
                                    <p className="text-sm font-medium text-gray-400">
-                                       {bottle.pricePaid} €
-                                   </p>
-                                   <p className="text-sm font-medium text-gray-400">
-                                       {bottle.status}
+                                       {bottle.bottleStatus}
                                    </p>
                                </div>
                            </div>

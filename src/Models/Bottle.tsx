@@ -18,7 +18,7 @@ interface Bottle {
     numberOfWhiskybaseRatings: number,
     averageValue: number | undefined,
     pricePaid: number | undefined,
-    status: BottleStatus,
+    bottleStatus: BottleStatus,
     imageNormal: string | undefined,
     imageBig: string | undefined
 }
