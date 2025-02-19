@@ -1,8 +1,9 @@
 import {useEffect, useState} from "react";
 import Bottle from "../Models/Bottle.tsx";
-import './FetchGalleryData.css'
+import './FetchGalleryData.module.css'
+import BottleStatusBar from "../Components/BottleStatusBar.tsx";
 
-function FetchGalleryData() {
+export default function FetchGalleryData() {
     const [galleryData, setGalleryData] = useState<Bottle[]>([]);
     const [error, setError] = useState<string | null>(null);
 
@@ -35,13 +36,11 @@ function FetchGalleryData() {
                                <img src={toImage(image)} alt=""
                                     className="object-contain group-hover:opacity-75 gallery-image"/>
                                <div className="grid grid-cols-1 content-between">
-                                   <h3 className="text-sm text-gray-200">
+                                   <h3 className="text-sm text-gray-200 break-words">
                                        {bottle.name}
                                    </h3>
 
-                                   <p className="text-sm font-medium text-gray-400">
-                                       {bottle.bottleStatus}
-                                   </p>
+                                   <BottleStatusBar status={bottle.bottleStatus} />
                                </div>
                            </div>
                        )})}
@@ -57,5 +56,3 @@ async function fetchGalleryData(): Promise<Bottle[]> {
     const response = await fetch('https://desktop-glhislj:8443/bottle');
     return await response.json();
 }
-
-export default FetchGalleryData;
