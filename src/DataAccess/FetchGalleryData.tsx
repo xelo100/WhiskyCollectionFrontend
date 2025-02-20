@@ -1,7 +1,8 @@
 import {useEffect, useState} from "react";
 import Bottle from "../Models/Bottle.tsx";
-import './FetchGalleryData.module.css'
+import './FetchGalleryData.module.css';
 import BottleStatusBar from "../Components/BottleStatusBar.tsx";
+import {API_BOTTLES} from "../constants.ts";
 
 export default function FetchGalleryData() {
     const [galleryData, setGalleryData] = useState<Bottle[]>([]);
@@ -40,7 +41,7 @@ export default function FetchGalleryData() {
                                        {bottle.name}
                                    </h3>
 
-                                   <BottleStatusBar status={bottle.bottleStatus} />
+                                   <BottleStatusBar initStatus={bottle.bottleStatus} whiskybaseId={bottle.whiskybaseId} />
                                </div>
                            </div>
                        )})}
@@ -53,6 +54,6 @@ function toImage(base64: string) {
 }
 
 async function fetchGalleryData(): Promise<Bottle[]> {
-    const response = await fetch('https://desktop-glhislj:8443/bottle');
+    const response = await fetch(API_BOTTLES);
     return await response.json();
 }
