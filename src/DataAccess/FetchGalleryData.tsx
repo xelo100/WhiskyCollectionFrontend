@@ -1,17 +1,25 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import Bottle from "../Models/Bottle.tsx";
 import './FetchGalleryData.module.css';
 import BottleStatusBar from "../Components/BottleStatusBar.tsx";
 import {API_BOTTLES} from "../constants.ts";
+import Filters from "../Models/Filters.tsx";
+import BottleStatus from "../Models/BottleStatus.tsx";
+import axios from "axios";
 
-export default function FetchGalleryData() {
+interface FetchGalleryDataProps {
+    filters: Filters;
+}
+
+const FetchGalleryData: React.FC<FetchGalleryDataProps> = ({ filters })=> {
+
     const [galleryData, setGalleryData] = useState<Bottle[]>([]);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         async function fetchData() {
             try {
-                const data = await fetchGalleryData();
+                const data = await fetchGalleryData(filters);
                 setGalleryData(data);
             } catch (error) {
                 setError(error instanceof Error ? error.message : String(error));
@@ -53,7 +61,27 @@ function toImage(base64: string) {
     return "data:image/png;base64," + base64;
 }
 
-async function fetchGalleryData(): Promise<Bottle[]> {
-    const response = await fetch(API_BOTTLES);
-    return await response.json();
+async function fetchGalleryData(filters: Filters): Promise<Bottle[]> {
+    const statusFilter: BottleStatus[] = [];
+
+    if (filters.ShowClosedBottles) {
+        statusFilter.push(BottleStatus.UNOPENED)
+    }
+
+    if (filters.ShowOpenBottles) {
+        statusFilter.push(BottleStatus.OPENED)
+    }
+
+    if (filters.ShowEmptyBottles) {
+        statusFilter.push(BottleStatus.EMPTY)
+    }
+
+    const params = {
+        status: statusFilter
+    };
+
+    const response = await axios.get(API_BOTTLES, { params });
+    return response.data;
 }
+
+export default FetchGalleryData;

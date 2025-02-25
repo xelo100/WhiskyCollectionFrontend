@@ -1,6 +1,6 @@
 import BottleStatus from "../Models/BottleStatus.tsx";
-import openImage from "./open.png";
-import emptyImage from "./empty.png";
+import openImage from "../Icons/open.png";
+import emptyImage from "../Icons/empty.png";
 import React, {useState} from "react";
 import {API_SET_STATUS} from "../constants.ts";
 
