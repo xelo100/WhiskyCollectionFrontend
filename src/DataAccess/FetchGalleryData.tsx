@@ -3,15 +3,16 @@ import Bottle from "../Models/Bottle.tsx";
 import './FetchGalleryData.module.css';
 import BottleStatusBar from "../Components/BottleStatusBar.tsx";
 import {API_BOTTLES} from "../constants.ts";
-import Filters from "../Models/Filters.tsx";
 import BottleStatus from "../Models/BottleStatus.tsx";
 import axios from "axios";
 
 interface FetchGalleryDataProps {
-    filters: Filters;
+    showClosedBottles: boolean;
+    showOpenBottles: boolean;
+    showEmptyBottles: boolean;
 }
 
-const FetchGalleryData: React.FC<FetchGalleryDataProps> = ({ filters })=> {
+const FetchGalleryData: React.FC<FetchGalleryDataProps> = ({ showClosedBottles, showOpenBottles, showEmptyBottles })=> {
 
     const [galleryData, setGalleryData] = useState<Bottle[]>([]);
     const [error, setError] = useState<string | null>(null);
@@ -19,14 +20,14 @@ const FetchGalleryData: React.FC<FetchGalleryDataProps> = ({ filters })=> {
     useEffect(() => {
         async function fetchData() {
             try {
-                const data = await fetchGalleryData(filters);
+                const data = await fetchGalleryData(showClosedBottles, showOpenBottles, showEmptyBottles);
                 setGalleryData(data);
             } catch (error) {
                 setError(error instanceof Error ? error.message : String(error));
             }
         }
         fetchData();
-    }, []);
+    }, [showOpenBottles, showClosedBottles, showEmptyBottles]);
 
     if (error) {
         return <div>Error: {error}</div>;
@@ -61,26 +62,27 @@ function toImage(base64: string) {
     return "data:image/png;base64," + base64;
 }
 
-async function fetchGalleryData(filters: Filters): Promise<Bottle[]> {
-    const statusFilter: BottleStatus[] = [];
+async function fetchGalleryData(showClosedBottles: boolean, showOpenBottles: boolean, showEmptyBottles: boolean): Promise<Bottle[]> {
+    const status: BottleStatus[] = [];
 
-    if (filters.ShowClosedBottles) {
-        statusFilter.push(BottleStatus.UNOPENED)
+    if (showClosedBottles) {
+        status.push(BottleStatus.UNOPENED)
     }
 
-    if (filters.ShowOpenBottles) {
-        statusFilter.push(BottleStatus.OPENED)
+    if (showOpenBottles) {
+        status.push(BottleStatus.OPENED)
     }
 
-    if (filters.ShowEmptyBottles) {
-        statusFilter.push(BottleStatus.EMPTY)
+    if (showEmptyBottles) {
+        status.push(BottleStatus.EMPTY)
     }
 
-    const params = {
-        status: statusFilter
-    };
-
-    const response = await axios.get(API_BOTTLES, { params });
+    const response = await axios.get(
+        API_BOTTLES,
+        {
+            params: { status: status },
+            paramsSerializer: { indexes: null }
+        });
     return response.data;
 }
 

@@ -1,4 +1,3 @@
-import React, {useState} from "react";
 
 interface CheckButtonProps {
     isActive: boolean;
@@ -8,19 +7,16 @@ interface CheckButtonProps {
 }
 
 const CheckButton: React.FC<CheckButtonProps> = ({ isActive, className, text, onReturn })=> {
-
-    const [active, setActive] = useState(isActive);
-
+    console.log("ChildComponent rendered"); // Will log when re-rendering
     const onClick = () => {
-        setActive(!active)
-        onReturn(active);
+        onReturn(!isActive);
     }
 
     let classes = className
-    if (active) {
-        classes += " bg-secondary text-black"
-    } else {
+    if (isActive) {
         classes += " bg-primary text-white"
+    } else {
+        classes += " bg-secondary text-black"
     }
 
     return (

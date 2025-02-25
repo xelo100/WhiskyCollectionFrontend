@@ -1,33 +1,31 @@
 import {FunnelIcon, XMarkIcon} from "@heroicons/react/24/solid";
 import React, {useState} from "react";
 import CheckButton from "./Shared/CheckButton.tsx";
-import Filters from "../Models/Filters.tsx"
 
 interface FilterBarProps {
     show: boolean;
-    onReturn: (Filters: Filters) => void;
+    onReturn: (ShowClosedFilter: boolean, ShowOpenFilter: boolean, ShowEmptyFilter: boolean) => void;
 }
 
 const FilterBar: React.FC<FilterBarProps> = ({ show, onReturn })=> {
 
-    const [filters, setFilters] = useState(new Filters());
+    const [showClosedFilter, setShowClosedFilter] = useState(true);
+    const [showOpenFilter, setShowOpenFilter] = useState(true);
+    const [showEmptyFilter, setShowEmptyFilter] = useState(true);
 
     const handleToggleClosed = (value: boolean) => {
-        setFilters(prevFilter => ({
-            ...prevFilter, ["ShowClosedBottles"]: value }));
-        onReturn(filters);
+        setShowClosedFilter(value);
+        onReturn(value, showOpenFilter, showEmptyFilter);
     }
 
     const handleToggleOpen = (value: boolean) => {
-        setFilters(prevFilter => ({
-            ...prevFilter, ["ShowOpenBottles"]: value }));
-        onReturn(filters);
+        setShowOpenFilter(value);
+        onReturn(showClosedFilter, value, showEmptyFilter);
     }
 
     const handleToggleEmpty = (value: boolean) => {
-        setFilters(prevFilter => ({
-            ...prevFilter, ["ShowEmptyBottles"]: value }));
-        onReturn(filters);
+        setShowEmptyFilter(value);
+        onReturn(showClosedFilter, showOpenFilter, value);
     }
 
     if (show)
@@ -44,9 +42,9 @@ const FilterBar: React.FC<FilterBarProps> = ({ show, onReturn })=> {
 
                 <p>Zeige</p>
                 <div className="inline-flex rounded-lg shadow-md">
-                    <CheckButton text="Geschlossen" className="p-2 rounded-e-none rounded-l-lg" isActive={true} onReturn={handleToggleClosed}/>
-                    <CheckButton text="Offen" className="p-2 rounded-none" isActive={true} onReturn={handleToggleOpen}/>
-                    <CheckButton text="Leer" className="p-2 rounded-s-none rounded-r-lg" isActive={true}  onReturn={handleToggleEmpty}/>
+                    <CheckButton text="Geschlossen" className="p-2 rounded-e-none rounded-l-lg" isActive={showClosedFilter} onReturn={handleToggleClosed}/>
+                    <CheckButton text="Offen" className="p-2 rounded-none" isActive={showOpenFilter} onReturn={handleToggleOpen}/>
+                    <CheckButton text="Leer" className="p-2 rounded-s-none rounded-r-lg" isActive={showEmptyFilter} onReturn={handleToggleEmpty}/>
                 </div>
             </div>
         )

@@ -1,22 +1,23 @@
 import FetchGalleryData from "./DataAccess/FetchGalleryData.tsx";
 import FilterBar from "./Components/FilterBar.tsx";
-import Filters from "./Models/Filters.tsx";
 import {useState} from "react";
 import {FunnelIcon} from "@heroicons/react/24/solid";
 
 function App() {
 
-    const [filters, setFilters] = useState(new Filters());
+    const [showClosedBottles, setShowClosedBottles] = useState(true);
+    const [showOpenBottles, setShowOpenBottles] = useState(true);
+    const [showEmptyBottles, setShowEmptyBottles] = useState(true);
     const [showFilters, setShowFilters] = useState(false);
 
     const onToggleShowFilters = () => {
         setShowFilters(!showFilters);
     }
 
-    const handleFiltersChanged = (value: Filters) => {
-        setFilters(prev => ({ ...prev, ["ShowClosedBottles"]: value.ShowClosedBottles }));
-        setFilters(prev => ({ ...prev, ["ShowOpenBottles"]: value.ShowOpenBottles }));
-        setFilters(prev => ({ ...prev, ["ShowEmptyBottles"]: value.ShowEmptyBottles }));
+    const handleFiltersChanged = (showClosedBottles: boolean, showOpenBottles: boolean, showEmptyBottles: boolean) => {
+        setShowClosedBottles(showClosedBottles);
+        setShowOpenBottles(showOpenBottles);
+        setShowEmptyBottles(showEmptyBottles);
     }
 
   return (
@@ -27,7 +28,7 @@ function App() {
         </div>
 
         <div className="mt-9">
-            <FetchGalleryData filters={filters}/>
+            <FetchGalleryData showClosedBottles={showClosedBottles} showOpenBottles={showOpenBottles} showEmptyBottles={showEmptyBottles} />
         </div>
     </>
   )
