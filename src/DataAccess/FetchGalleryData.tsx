@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import Bottle from "../Models/Bottle.tsx";
-import './FetchGalleryData.module.css';
 import BottleStatusBar from "../Components/BottleStatusBar.tsx";
 import {API_BOTTLES} from "../constants.ts";
 import BottleStatus from "../Models/BottleStatus.tsx";

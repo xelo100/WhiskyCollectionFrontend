@@ -7,7 +7,7 @@ interface CheckButtonProps {
 }
 
 const CheckButton: React.FC<CheckButtonProps> = ({ isActive, className, text, onReturn })=> {
-    console.log("ChildComponent rendered"); // Will log when re-rendering
+
     const onClick = () => {
         onReturn(!isActive);
     }

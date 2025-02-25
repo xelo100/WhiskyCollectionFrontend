@@ -72,3 +72,8 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.gallery-image {
+  aspect-ratio: 1 / 2;
+  max-height: 10rem;
+}
